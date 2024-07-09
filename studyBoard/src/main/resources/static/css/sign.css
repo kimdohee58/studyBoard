@@ -1,0 +1,17 @@
+body {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signUp {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: wrap;
+    position: absolute;
+}
+
+.signUp-item {
+    margin: auto;
+}

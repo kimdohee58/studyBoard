@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignIn</title>
+    <link rel="stylesheet" href="../css/sign" type="text/css">
+</head>
+<body>
+<div>
+    <form action="/users/auth" method="post" class="signUp">
+        <div class="signUp-item">
+            <label for="username">아이디
+                <input id="username" name="username">
+            </label>
+        </div>
+
+        <div class="signUp-item">
+            <label for="password">비밀번호
+                <input id="password" name="password">
+            </label>
+        </div>
+        <button type="submit" class="btn btn-outline-primary">로그인</button>
+    </form>
+    <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">뒤로가기</button>
+</div>
+</body>
+</html>
