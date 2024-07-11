@@ -1,7 +1,6 @@
 package com.nc13.study.board.controller;
 
-import com.nc13.study.board.dto.UserSaveRequestDTO;
-import com.nc13.study.board.domain.User;
+import com.nc13.study.board.dto.UserRequestDTO;
 import com.nc13.study.board.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String signUp(UserSaveRequestDTO user) {
+    public String signUp(UserRequestDTO user) {
         userService.save(user);
         System.out.println("회원가입 성공");
         return "redirect:/users/signIn";

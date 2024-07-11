@@ -1,0 +1,20 @@
+.btn {
+    color: darkseagreen;
+    outline: dimgrey;
+    float: right;
+}
+
+.board {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.board_head {
+    background-color: lightslategrey;
+}
+
+.board_body:hover {
+    font-weight: bolder;
+    cursor: pointer;
+}

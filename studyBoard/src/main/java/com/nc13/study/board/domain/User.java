@@ -7,7 +7,7 @@ import lombok.*;
 이는 도메인이라 불리는 개발 대상을 모든 사람이 동일한 관점에서 이해할 수 있고, 공유할 수 있도록 단순화 시킨 것 */
 
 @Entity
-@Getter // entity 클래스에서는 절대 Setter 메소드를 만들지 않음
+@Getter // entity 클래스에서는 절대 Setter 메소드를 쓰지 않음
 @Table(name = "user") // db상의 실제 테이블명을 명시하여 엔티티와 db table 매핑
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 // lombok에서 제공, 매개변수를 갖지 않는 기본 생성자를 생성해주며 일반적으로 access=AccessLevel.PROTECTED 옵션 선언해서 무분별한 객체 생성 방지
