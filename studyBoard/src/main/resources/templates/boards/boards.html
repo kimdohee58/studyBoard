@@ -7,48 +7,47 @@
 </head>
 <body>
 <div class="header">
-    <h1>board</h1>
-    <button class="btn btn-outline-primary" onclick="location.href='../users/signIn'"><span th:text="로그인"/></button>
-    <button class="btn btn-outline-primary" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
+    <h1 class="title" th:href="@{/boards(page=1)}">board</h1>
+    <button class="btn" onclick="location.href='../users/signIn'"><span th:text="로그인"/></button>
+    <button class="btn" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
 </div>
 <div class="flex-container">
-    <table class="board">
-        <tr class="board_head">
-            <th th:text="제목"></th>
-            <th th:text="작성자"></th>
-            <th th:text="작성시간"></th>
-        </tr>
-        <!--https://lifere.tistory.com/entry/Thymeleaf-list-%EB%B0%98%EB%B3%B5-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0 참고-->
-        <tr th:each="b : ${boardPages}" class="board_body">
-            <td th:text="${b.title}"></td>
-            <span th:each="u:${users}">
-                <!--                <td th:text="${b.writerId}"></td>-->
-                <span th:if="${u.id == b.writerId}">
-                    <td th:text="${u.nickname}"></td>
-                </span>
-            </span>
-            <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
-            <td th:text="${#dates.format(b.entryDate, 'yyMMdd HH:mm:ss')}"></td>
-        </tr>
-    </table>
+    <div class="flex-item">
+        <table class="board">
+            <tr class="board_head">
+                <th th:text="제목"></th>
+                <th th:text="작성자"></th>
+                <th th:text="작성시간"></th>
+            </tr>
+            <!--https://lifere.tistory.com/entry/Thymeleaf-list-%EB%B0%98%EB%B3%B5-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0 참고-->
+            <tr th:each="b : ${boardPages}" class="board_body">
+                <td th:text="${b.title}"></td>
+                <td th:text="${b.nickname}"></td>
+                <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
+                <td th:text="${#dates.format(b.entryDate, 'yyMMdd HH:mm:ss')}"></td>
+            </tr>
+        </table>
+    </div>
 
-    <!--페이징, https://hstory0208.tistory.com/entry/Spring-%EC%8A%A4%ED%94%84%EB%A7%81-%ED%8E%98%EC%9D%B4%EC%A7%95Paging-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EB%B0%A9%EB%B2%95-Thymeleaf-JPA 참고-->
-    <a th:href="@{/boards(page=1)}">첫 페이지</a>
-    <!--이전 링크 활성화 비활성화-->
-    <!--    <a th:href="${boardPages.first} ? '#' : @{/boards(page=${boardPages.number})}"> 이전 </a>-->
-    <!--페이지 번호 링크 (현재 페이지는 숫자만) for(int page=startPage; page<= endPage;page++)-->
-    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+    <div class="flex-item paging">
+        <!--페이징, https://hstory0208.tistory.com/entry/Spring-%EC%8A%A4%ED%94%84%EB%A7%81-%ED%8E%98%EC%9D%B4%EC%A7%95Paging-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84-%EB%B0%A9%EB%B2%95-Thymeleaf-JPA 참고-->
+        <th:block th:href="@{/boards(page=1)}"> <<</th:block>
+        <!--이전 링크 활성화 비활성화-->
+        <a th:href="${boardPages.first} ? '/' : @{/boards(page=${boardPages.number})}"> < </a>
+        <!--페이지 번호 링크 (현재 페이지는 숫자만) for(int page=startPage; page<= endPage;page++)-->
+        <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
         <!--현재 페이지는 링크 없이 숫자만-->
         <span th:if="${page == boardPages.number + 1}" th:text="${page}"></span>
-        <!--현재 페이지 링크 x, 다른 페이지 번호에는 링크를 보여준다-->
+            <!--현재 페이지 링크 x, 다른 페이지 번호에는 링크를 보여준다-->
         <span th:unless="${page == boardPages.number + 1}">
-            <a th:href="@{/boards(page=${page})}" th:text="${page}"></a>
+            <th:block th:href="@{/boards(page=${page})}" th:text="${page}"></th:block>
         </span>
-    </span>
-    <!--다음 링크 활성화 비활성화-->
-    <!--    <a th:href="${boardPages.last} ? '#' : @{/boards(page=${boardPages.number+2})}">다음</a>-->
-    <!--마지막 페이지로 이동-->
-    <a th:href="@{/boards(page=${boardPages.totalPages})}">마지막 페이지</a>
+        </span>
+        <!--다음 링크 활성화 비활성화-->
+        <a th:href="${boardPages.last} ? '/' : @{/boards(page=${boardPages.number+2})}"> > </a>
+        <!--마지막 페이지로 이동-->
+        <th:block th:href="@{/boards(page=${boardPages.totalPages})}"> >></th:block>
+    </div>
 </div>
 </body>
 </html>

@@ -12,13 +12,6 @@ public class UserRequestDTO {
     private String password;
     private String nickname;
 
-    @Builder
-    public UserRequestDTO(String username, String password, String nickname) {
-        this.username = username;
-        this.password = password;
-        this.nickname = nickname;
-    }
-
     public User toEntity() {
         return User.builder()
                 .username(username)

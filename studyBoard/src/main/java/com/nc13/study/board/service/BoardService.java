@@ -2,7 +2,9 @@ package com.nc13.study.board.service;
 
 import com.nc13.study.board.domain.Board;
 import com.nc13.study.board.domain.BoardRepository;
+import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.BoardRequestDTO;
+import com.nc13.study.board.dto.BoardResponseDTO;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
@@ -20,10 +22,26 @@ import java.util.List;
 public class BoardService {
     private final BoardRepository boardRepo;
 
+    // 페이징
     @Transactional
-    public void save(BoardRequestDTO board) {
-        boardRepo.save(board.toEntity());
+    public Page<BoardResponseDTO> paging(Pageable pageable) {
+        int page = pageable.getPageNumber() - 1; //page 위치에 있는 값은 0부터 시작
+        int pageLimit = 5; // 한페이지에 보여줄 글 개수
+
+        // 한 페이지에 5개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순
+        Page<Board> boardsPages = boardRepo.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+
+        // 목록 : title, writer, entryDate
+        Page<BoardResponseDTO> boardResponseDTOS = boardsPages.map(
+                boardPage -> new BoardResponseDTO(boardPage)
+        );
+        return boardResponseDTOS;
     }
+
+//    @Transactional
+//    public void save(BoardRequestDTO board) {
+//        boardRepo.save(board.toEntity());
+//    }
 
     @Transactional
     public Board findById(Long id) {
@@ -33,21 +51,5 @@ public class BoardService {
     @Transactional
     public List<Board> findAll() {
         return boardRepo.findAll();
-    }
-
-    // 페이징
-    @Transactional
-    public Page<BoardRequestDTO> paging(Pageable pageable) {
-        int page = pageable.getPageNumber() - 1; //page 위치에 있는 값은 0부터 시작
-        int pageLimit = 5; // 한페이지에 보여줄 글 개수
-
-        // 한 페이지에 5개씩 글을 보여주고 정렬 기준은 id 기준으로 내림차순
-        Page<Board> boardsPages = boardRepo.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-
-        // 목록 : title, writer, entryDate
-        Page<BoardRequestDTO> boardRequestDTOS = boardsPages.map(
-                boardPage -> new BoardRequestDTO(boardPage)
-        );
-        return boardRequestDTOS;
     }
 }
