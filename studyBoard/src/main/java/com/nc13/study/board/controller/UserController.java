@@ -17,6 +17,7 @@ public class UserController {
     // 회원가입
     @GetMapping("/users/signUp")
     public String users() {
+        System.out.println("회원가입 접속");
         return "users/signUp";
     }
 
@@ -30,12 +31,19 @@ public class UserController {
     // 로그인
     @GetMapping("/users/signIn")
     public String signIn() {
+        System.out.println("로그인 접속");
         return "users/signIn";
     }
 
     @PostMapping("/users/auth")
-    public String auth(@Param("username") String username, @Param("password") String password) {
+    public String auth(UserRequestDTO user) {
+        System.out.println("로그인 실행");
+        System.out.println(user);
+        String username = user.getUsername();
+        String password = user.getPassword();
+        System.out.println(username + ", " + password);
         if (userService.findByUsername(username) == null) {
+            System.out.println(username + "회원 존재하지 않음");
             return "redirect:/users/signIn";
         }
         userService.findByUsernameAndPassword(username, password);

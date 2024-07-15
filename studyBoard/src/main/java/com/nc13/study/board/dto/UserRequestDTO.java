@@ -1,5 +1,6 @@
 package com.nc13.study.board.dto;
 
+import com.nc13.study.board.domain.Role;
 import com.nc13.study.board.domain.User;
 import lombok.Builder;
 import lombok.Data;
@@ -11,7 +12,7 @@ public class UserRequestDTO {
     private String username;
     private String password;
     private String nickname;
-    private String role;
+    private Role role;
 
     public User toEntity() {
         return User.builder()

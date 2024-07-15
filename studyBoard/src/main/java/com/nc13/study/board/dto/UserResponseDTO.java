@@ -1,5 +1,6 @@
 package com.nc13.study.board.dto;
 
+import com.nc13.study.board.domain.Role;
 import com.nc13.study.board.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +15,7 @@ public class UserResponseDTO {
     private String username;
     private String password;
     private String nickname;
-    private String role;
+    private Role role;
 
     @Builder
     public UserResponseDTO(User user) {

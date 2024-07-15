@@ -30,7 +30,8 @@ public class UserService {
 
     @Transactional
     public void findByUsernameAndPassword(String username, String password) {
-        userRepo.findByUsernameAndPassword(username, password);
+        User user = userRepo.findByUsernameAndPassword(username, passwordEncoder.encode(password));
+        System.out.println("UserService : "+user);
     }
 
     @Transactional
