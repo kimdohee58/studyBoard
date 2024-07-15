@@ -14,11 +14,13 @@ public class UserResponseDTO {
     private String username;
     private String password;
     private String nickname;
+    private String role;
 
     @Builder
     public UserResponseDTO(User user) {
         this.username = user.getUsername();
         this.password = user.getPassword();
         this.nickname = user.getNickname();
+        this.role = user.getRole();
     }
 }

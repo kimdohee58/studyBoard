@@ -21,7 +21,7 @@ public class User {
     private int id;
 
     // @Column 사용해서 테이블의 컬럼과 연결
-    @Column(name = "username")
+    @Column(name = "email")
     private String username;
 
     @Column(name = "password")
@@ -30,11 +30,15 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
+    @Column(name = "role")
+    private String role;
+
     @Builder // 롬복에서 제공해주는 어노테이션으로, 클래스에 빌더 패턴을 자동으로 생성해 줍니다. 빌더 패턴은 생성자 또는 자바 빈 패턴 보다 객체 생성을 가독성 있고 편리하게 해주는 디자인 패턴 중 하나로, 테스트 과정에서 자세히 알아보겠습니다.
-    public User(int id, String username, String password, String nickname) {
+    public User(int id, String username, String password, String nickname, String role) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.role = role;
     }
 }

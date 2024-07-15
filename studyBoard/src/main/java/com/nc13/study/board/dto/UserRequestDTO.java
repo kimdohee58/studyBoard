@@ -11,12 +11,14 @@ public class UserRequestDTO {
     private String username;
     private String password;
     private String nickname;
+    private String role;
 
     public User toEntity() {
         return User.builder()
                 .username(username)
                 .password(password)
                 .nickname(nickname)
+                .role(role)
                 .build();
     }
 }
