@@ -29,7 +29,7 @@ public class BoardRequestDTO {
         this.modifyDate = board.getModifyDate();
     }
 
-    public Board toEntity(Board board) {
+    public Board toEntity() {
         return Board.builder()
                 .title(title)
                 .content(content)

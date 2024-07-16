@@ -21,7 +21,7 @@
         <button class="sign btn" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
     </div>
     <div>
-        <h1 class="title" th:href="@{/boards(page=1)}">board</h1>
+        <h1 class="title" th:text="board" th:href="@{/boards(page=1)}"/>
         <!--        <button class="sign btn" th:onclick="writeBoard()" th:text="글 작성" disabled/>-->
     </div>
     <div>
