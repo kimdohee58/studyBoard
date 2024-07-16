@@ -12,6 +12,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -38,5 +39,17 @@ public class BoardController {
         model.addAttribute("endPage", endPage);
 
         return "boards/boards";
+    }
+
+    @GetMapping("/boards/write")
+    public String writeBoard() {
+        return "boards/write";
+    }
+
+    @PostMapping("/boards/write")
+    public String writeBoard(BoardRequestDTO boardRequestDTO, Model model) {
+        System.out.println("writeBoard");
+        boardService.save(boardRequestDTO);
+        return "redirect:/boards";
     }
 }

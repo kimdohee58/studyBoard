@@ -28,8 +28,6 @@ public class Board {
     // User left join, https://ksh-coding.tistory.com/105
     @ManyToOne(fetch = FetchType.LAZY) // false로 설정하게 되면 user가 null 값인 것을 허용하지 않음
     @JoinColumn(name = "writer_id")
-//    @JoinTable(name = "user", joinColumns = @JoinColumn(name = "writer_id", referencedColumnName = "id"))
-//    @JoinTable(name = "user", joinColumns = {@JoinColumn(name = "id", referencedColumnName = "writer_id")})
     private User user;
 
     @Column(name = "entry_date")

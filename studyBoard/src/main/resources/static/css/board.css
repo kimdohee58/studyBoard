@@ -1,12 +1,10 @@
-
-.header {
-    margin: 5%;
-    height: 50%;
-}
+/*.header {*/
+/*    margin: 5%;*/
+/*    height: 50%;*/
+/*}*/
 
 .title {
-    width: 20%;
-    margin-top: 5%;
+    margin-top: 3%;
     height: 50%;
 }
 
@@ -16,21 +14,15 @@
 }
 
 .flex-container {
+    width: 80%;
+    margin-left: 10%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    align-content: stretch;
     justify-content: space-around;
-}
-
-.flex-item {
-    align-items: center;
-    align-content: center;
 }
 
 table {
     width: 80%;
-    margin-left: 10%;
     text-align: center;
     align-items: center;
     align-content: center;
@@ -41,9 +33,14 @@ table {
     cursor: pointer;
 }
 
-button {
+.sign {
     align-items: flex-end;
     float: right;
+}
+
+sign:hover {
+    outline-color: lightslategrey;
+    cursor: pointer;
 }
 
 .paging {

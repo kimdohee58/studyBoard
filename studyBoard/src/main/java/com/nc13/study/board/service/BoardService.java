@@ -38,10 +38,10 @@ public class BoardService {
         return boardResponseDTOS;
     }
 
-//    @Transactional
-//    public void save(BoardRequestDTO board) {
-//        boardRepo.save(board.toEntity());
-//    }
+    @Transactional
+    public void save(BoardRequestDTO board) {
+        boardRepo.save(board.toEntity());
+    }
 
     @Transactional
     public Board findById(Long id) {

@@ -29,13 +29,13 @@ public class BoardRequestDTO {
         this.modifyDate = board.getModifyDate();
     }
 
-//    public Board toEntity(Board board) {
-//        return Board.builder()
-//                .title(title)
-//                .content(content)
-//                .user()
-//                .entryDate(entryDate)
-//                .modifyDate(modifyDate)
-//                .build();
-//    }
+    public Board toEntity(Board board) {
+        return Board.builder()
+                .title(title)
+                .content(content)
+                .user(setUser(writerId))
+                .entryDate(entryDate)
+                .modifyDate(modifyDate)
+                .build();
+    }
 }

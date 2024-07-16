@@ -2,6 +2,7 @@ package com.nc13.study.board.controller;
 
 import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.UserRequestDTO;
+import com.nc13.study.board.dto.UserResponseDTO;
 import com.nc13.study.board.service.UserService;
 import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
@@ -49,14 +50,14 @@ public class UserController {
             return "redirect:/users/signIn";
         }
 
-        User user1 = userService.findByUsernameAndPassword(username, password);
-        if (user1 == null) {
-            System.out.println("사용자를 찾을 수 없음 : " + user1);
+        UserResponseDTO logIn = userService.findByUsernameAndPassword(username, password);
+        if (logIn == null) {
+            System.out.println("사용자를 찾을 수 없음 : " + username);
             return "redirect:/users/signIn";
         }
-
-        model.addAttribute("user", user1.getNickname());
         System.out.println("로그인 성공");
+
+        model.addAttribute("user", logIn);
         return "redirect:/boards";
     }
 }
