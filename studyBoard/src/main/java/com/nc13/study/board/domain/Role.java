@@ -10,4 +10,8 @@ public enum Role { // https://dev-coco.tistory.com/120
     ADMIN("ROLE_ADMIN");
 
     private final String role;
+
+    public String getAuthority() {
+        return role;
+    }
 }

@@ -30,7 +30,7 @@ public class User {
     @Column(name = "nickname")
     private String nickname;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // enumtype.string 옵션 사용하면 enum 이름 그대로 db에 저장
     @Column(name = "role")
     private Role role;
 

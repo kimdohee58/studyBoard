@@ -1,6 +1,15 @@
+
+.header {
+    margin: 5%;
+    height: 50%;
+}
+
 .title {
     width: 20%;
+    margin-top: 5%;
+    height: 50%;
 }
+
 .title:hover {
     cursor: pointer;
     font-weight: bolder;
@@ -14,24 +23,32 @@
     justify-content: space-around;
 }
 
-.btn {
-    color: darkseagreen;
-    outline: dimgrey;
-    float: right;
+.flex-item {
+    align-items: center;
+    align-content: center;
 }
 
-.board {
-    width: 100%;
+table {
+    width: 80%;
+    margin-left: 10%;
     text-align: center;
     align-items: center;
+    align-content: center;
     justify-content: center;
 }
 
-.board_head {
-    background-color: lightslategrey;
+.table-hover {
+    cursor: pointer;
 }
 
-.board_body:hover {
-    font-weight: bolder;
-    cursor: pointer;
+button {
+    align-items: flex-end;
+    float: right;
+}
+
+.paging {
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
 }

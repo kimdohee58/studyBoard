@@ -34,9 +34,9 @@ public class SecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests((authorizeRequests) ->
-//                                authorizeRequests.requestMatchers("/", "/boards",
-//                                        "/users/", "/users/auth", "/users/signIn", "/users/signUp")
-                        authorizeRequests.anyRequest().permitAll()
+                                authorizeRequests.requestMatchers("/", "/boards",
+                                        "/users/signUp", "/users/", "/users/signIn", "/users/auth").permitAll()
+//                        authorizeRequests.anyRequest().permitAll()
                 )
                 // https://shoney.tistory.com/entry/Spring-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-Security-Form-Login-%EC%9D%B8%EC%A6%9D-%EA%B8%B0%EB%B3%B8-%EC%84%A4%EC%A0%95-%EC%8A%A4%ED%94%84%EB%A7%81-3-%EB%B2%84%EC%A0%84-%EC%9D%B4%EC%83%81%EC%97%90%EC%84%9C-%EC%82%AC%EC%9A%A9-WebSecurityConfigurerAdapter-%EC%97%86%EC%9D%8C
                 .formLogin(form -> form
@@ -45,7 +45,7 @@ public class SecurityConfig {
                                 .passwordParameter("password")
                                 .defaultSuccessUrl("/boards")
                                 .failureUrl("/users/signIn")
-                                .loginProcessingUrl("POST/api/users/auth")
+                                .loginProcessingUrl("/users/auth")
 //                        .successHandler(new AuthenticationSuccessHandler() {
 //                            @Override
 //                            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

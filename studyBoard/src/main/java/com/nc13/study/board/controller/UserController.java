@@ -1,12 +1,16 @@
 package com.nc13.study.board.controller;
 
+import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.UserRequestDTO;
 import com.nc13.study.board.service.UserService;
+import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.model.IModel;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,17 +40,22 @@ public class UserController {
     }
 
     @PostMapping("/users/auth")
-    public String auth(UserRequestDTO user) {
-        System.out.println("로그인 실행");
-        System.out.println(user);
+    public String auth(UserRequestDTO user, Model model) {
         String username = user.getUsername();
         String password = user.getPassword();
-        System.out.println(username + ", " + password);
+
         if (userService.findByUsername(username) == null) {
             System.out.println(username + "회원 존재하지 않음");
             return "redirect:/users/signIn";
         }
-        userService.findByUsernameAndPassword(username, password);
+
+        User user1 = userService.findByUsernameAndPassword(username, password);
+        if (user1 == null) {
+            System.out.println("사용자를 찾을 수 없음 : " + user1);
+            return "redirect:/users/signIn";
+        }
+
+        model.addAttribute("user", user1.getNickname());
         System.out.println("로그인 성공");
         return "redirect:/boards";
     }
