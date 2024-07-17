@@ -10,6 +10,7 @@ import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,7 +46,7 @@ public class UserController {
         return "users/signIn";
     }
 
-
+//    @PostMapping("/users/auth")
 //    public String auth(UserRequestDTO user, Model model) {
 ////    public String auth(@AuthenticationPrincipal UserRequestDTO user, Model model) {
 //        String username = user.getUsername();
@@ -71,7 +72,7 @@ public class UserController {
 //    }
 
     // https://velog.io/@yoho98/Spring-Security-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%9B%84-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%A0%95%EB%B3%B4%EC%96%BB%EA%B8%B0
-    public String username(@AuthenticationPrincipal Principal principal) {
+    public String username(Principal principal) {
         System.out.println(principal.getName());
         return principal.getName();
     }

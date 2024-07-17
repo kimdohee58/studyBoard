@@ -3,6 +3,7 @@ package com.nc13.study.board.domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 /* DB와 같이 데이터 저장소에 접근하는 영역(DAO, Data Access Object) */
 
@@ -15,8 +16,8 @@ public interface UserRepository extends JpaRepository<User, Integer> { // 제네
     // 회원가입 메소드
     User save(User user);
 
-    // 로그인 메소드
-    User findByUsernameAndPassword(String username, String password);
+    // 로그인 메소드, securityconfig의 formLogin에서 처리
+//    User findByUsernameAndPassword(String username, String password);
 
     // 회원 목록
     List<User> findAll();

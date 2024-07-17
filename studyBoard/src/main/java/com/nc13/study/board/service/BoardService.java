@@ -2,11 +2,8 @@ package com.nc13.study.board.service;
 
 import com.nc13.study.board.domain.Board;
 import com.nc13.study.board.domain.BoardRepository;
-import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.BoardRequestDTO;
 import com.nc13.study.board.dto.BoardResponseDTO;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,8 +42,9 @@ public class BoardService {
     }
 
     @Transactional
-    public Board findById(Long id) {
-        return boardRepo.findById(id).orElse(null);
+    public BoardResponseDTO findById(Long id) {
+        Optional<Board> board = boardRepo.findById(id);
+        return new BoardResponseDTO(board.orElse(null));
     }
 
     @Transactional

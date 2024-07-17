@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<!-- https://velog.io/@code12/Spring-Security-Spring-Boot%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Thymeleaf-%EC%97%B0%EA%B2%B0 -->
 <head>
     <meta charset="UTF-8">
     <title>Board</title>
@@ -14,22 +16,20 @@
 <!--<th:block th:replace="header :: header"></th:block>-->
 <div class="flex-container">
     <div class="header">
-        <th:block th:if="${logIn} != null">
-            <button class="btn" th:onclick="@{/users/logOut}" th:text="logOut"/>
+        <th:block sec:authorize="isAnonymous()">
+            <button class="sign btn" th:onclick="|location.href='/users/signIn'|" th:text="로그인"/>
+            <button class="sign btn" th:onclick="|location.href='/users/signUp'|" th:text="회원가입"/>
         </th:block>
-        <th:block th:unless="${logIn} != null">
-            <button class="sign btn" onclick="location.href='../users/signIn'"><span th:text="로그인"/></button>
-            <button class="sign btn" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
+        <th:block sec:authorize="isAuthenticated()">
+            <button class="sign btn" th:onclick="|location.href='/users/logOut'|" th:text="logOut"/>
+            <div th:text="${logIn.getNickname()}"/>
         </th:block>
     </div>
-<!--    <div>-->
-<!--        <th:block th:if="${logIn} !=null">-->
-<!--            <p th:text="${logIn.getNickname()}"/>-->
-<!--        </th:block>-->
-<!--    </div>-->
     <div>
         <h1 class="title" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
-        <!--        <button class="sign btn" th:onclick="writeBoard()" th:text="글 작성" disabled/>-->
+        <th:block sec:authorize="isAuthenticated()">
+<!--            <button class="sign btn" th:onclick="|location.href='@{/boards/write}'|" th:text="글 작성"/>-->
+        </th:block>
     </div>
     <div>
         <table class="table table-hover">
@@ -42,12 +42,17 @@
             </thead>
             <tbody>
             <!--https://lifere.tistory.com/entry/Thymeleaf-list-%EB%B0%98%EB%B3%B5-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0 참고-->
-            <tr class="" th:each="b : ${boardPages}">
-                <td th:text="${b.title}"></td>
-                <td th:text="${b.nickname}"></td>
-                <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
-                <td th:text="${#dates.format(b.entryDate, 'yyMMdd HH:mm:ss')}"></td>
-            </tr>
+            <!--            <tr class="" th:each="b : ${boardPages}" th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
+            <th:block th:each="b : ${boardPages}">
+                <tr>
+<!--                <tr th:onclick="|location.href='@{/boards/showOne/{id}(id=${b.id})}'|">-->
+                    <td th:text="${b.title}"></td>
+                    <td th:text="${b.nickname}"></td>
+                    <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
+                    <td th:text="${#dates.format(b.entryDate, 'yyMMdd HH:mm:ss')}"></td>
+                </tr>
+            </th:block>
+
             </tbody>
         </table>
 

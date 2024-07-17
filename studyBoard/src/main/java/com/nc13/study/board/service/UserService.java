@@ -50,21 +50,13 @@ public class UserService {
         userRepo.save(user.toEntity());
     }
 
+    // 주석처리하면 안됨!
     @Transactional
     public User findByUsername(String username) {
         return userRepo.findByUsername(username);
     }
 
-    @Transactional
-    public boolean findByPassword(String password) {
-        if(!passwordEncoder.matches(password, password)) {
-            return false;
-        }
-        return true;
-    }
-
     // https://kedric-me.tistory.com/entry/Spring-Password-Encoder-%EB%B9%84%EB%B0%80%EB%B2%88%ED%98%B8-%EC%95%94%ED%98%B8%ED%99%94#google_vignette,
-    //
     @Transactional
     public UserResponseDTO findByUsernameAndPassword(String username, String password) {
         User user = userRepo.findByUsername(username);
@@ -73,12 +65,6 @@ public class UserService {
         }
         return new UserResponseDTO(user);
     }
-
-//    @Transactional
-//    public void findByUsernamePassword(String username, String password) {
-//        User user = userRepo.findByUsernameAndPassword(username, passwordEncoder.encode(password));
-//        System.out.println("UserService : "+user);
-//    }
 
     @Transactional
     public List<User> findAll() {

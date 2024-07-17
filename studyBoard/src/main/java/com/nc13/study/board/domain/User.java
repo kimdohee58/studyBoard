@@ -2,6 +2,10 @@ package com.nc13.study.board.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.List;
+import java.util.Set;
 
 /* @Entity가 사용된 영역은 도메인 모델, 비지니스 처리를 담당
 이는 도메인이라 불리는 개발 대상을 모든 사람이 동일한 관점에서 이해할 수 있고, 공유할 수 있도록 단순화 시킨 것 */
@@ -42,5 +46,11 @@ public class User {
         this.password = password;
         this.nickname = nickname;
         this.role = role;
+    }
+
+    public User(String username, String password, List<GrantedAuthority> authorityList) {
+        this.username = username;
+        this.password = password;
+        this.role = Role.USER;
     }
 }

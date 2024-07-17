@@ -1,19 +1,24 @@
 package com.nc13.study.board.security;
 // https://velog.io/@silver_cherry/Spring-Security-%EB%A1%9C%EA%B7%B8%EC%9D%B8
 // https://velog.io/@on5949/SpringSecurity-%ED%9A%8C%EC%9B%90%EA%B0%80%EC%9E%85-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%EA%B8%B0%EB%8A%A5
+
 import com.nc13.study.board.domain.Role;
 import com.nc13.study.board.domain.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
+@Getter
 public class UserDetail implements UserDetails {
     private final User user;
 
-    public UserDetail(User user) {
+    public UserDetail(final User user) {
         this.user = user;
     }
 
@@ -33,12 +38,10 @@ public class UserDetail implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role role = user.getRole();
-        String authority = role.getAuthority();
+        String authority = user.getRole().getAuthority();
 
-        SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority(authority);
-        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
-        grantedAuthorities.add(simpleGrantedAuthority);
+        Collection<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority(authority));
 
         return grantedAuthorities;
     }
