@@ -14,14 +14,21 @@
 <!--<th:block th:replace="header :: header"></th:block>-->
 <div class="flex-container">
     <div class="header">
-        <!--        <th:block th:if="${user} !=null">-->
-        <!--        <button class="btn" th:onclick="@{/users/logOut}" th:text="logOut"/>-->
-        <!--        </th:block>-->
-        <button class="sign btn" onclick="location.href='../users/signIn'"><span th:text="로그인"/></button>
-        <button class="sign btn" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
+        <th:block th:if="${logIn} != null">
+            <button class="btn" th:onclick="@{/users/logOut}" th:text="logOut"/>
+        </th:block>
+        <th:block th:unless="${logIn} != null">
+            <button class="sign btn" onclick="location.href='../users/signIn'"><span th:text="로그인"/></button>
+            <button class="sign btn" onclick="location.href='../users/signUp'"><span th:text="회원가입"/></button>
+        </th:block>
     </div>
+<!--    <div>-->
+<!--        <th:block th:if="${logIn} !=null">-->
+<!--            <p th:text="${logIn.getNickname()}"/>-->
+<!--        </th:block>-->
+<!--    </div>-->
     <div>
-        <h1 class="title" th:text="board" th:href="@{/boards(page=1)}"/>
+        <h1 class="title" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
         <!--        <button class="sign btn" th:onclick="writeBoard()" th:text="글 작성" disabled/>-->
     </div>
     <div>

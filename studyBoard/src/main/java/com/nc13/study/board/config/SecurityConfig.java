@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
     // 403, 401 error 처리, https://velog.io/@wonizizi99/Spring-Spring-Security-9-401-403-Error-ExceptionHandling-%ED%95%B4%EB%B3%B4%EA%B8%B0
 //    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -49,39 +51,42 @@ public class SecurityConfig {
                         .authenticationEntryPoint(customAuthenticationEntryPoint) // 401 상태 코드 전달, 인증 예외처리
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/", "GET"),
-                                new AntPathRequestMatcher("/boards", "GET"),
-                                new AntPathRequestMatcher("/users/**", "GET"),
-                                new AntPathRequestMatcher("/users/**", "POST"),
-                                new AntPathRequestMatcher("/css/**"),
-                                new AntPathRequestMatcher("/images/**")
-                        ).permitAll()
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/boards/**", "POST")
-                        ).hasAnyRole("ADMIN", "USER")
-                        .anyRequest().authenticated()
+                                .requestMatchers(new AntPathRequestMatcher("/", "GET"),
+                                        new AntPathRequestMatcher("/boards/**", "GET"),
+                                        new AntPathRequestMatcher("/users/**", "GET"),
+                                        new AntPathRequestMatcher("/users/**", "POST"),
+                                        new AntPathRequestMatcher("/css/**"),
+                                        new AntPathRequestMatcher("/images/**")
+                                ).permitAll()
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/boards/**", "POST")
+                                ).hasAnyRole("ADMIN", "USER")
+                                .anyRequest().authenticated()
+//                        .anyRequest().permitAll()
                 )
                 // https://shoney.tistory.com/entry/Spring-%EC%8B%9C%ED%81%90%EB%A6%AC%ED%8B%B0-Security-Form-Login-%EC%9D%B8%EC%A6%9D-%EA%B8%B0%EB%B3%B8-%EC%84%A4%EC%A0%95-%EC%8A%A4%ED%94%84%EB%A7%81-3-%EB%B2%84%EC%A0%84-%EC%9D%B4%EC%83%81%EC%97%90%EC%84%9C-%EC%82%AC%EC%9A%A9-WebSecurityConfigurerAdapter-%EC%97%86%EC%9D%8C
                 .formLogin(form -> form
                                 .loginPage("/users/signIn")
                                 .usernameParameter("username")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/boards")
-                                .failureUrl("/users/signIn")
-                                .loginProcessingUrl("POST/api/users/auth")
-//                                .successHandler(new AuthenticationSuccessHandler() {
-//                                    @Override
-//                                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//                                        System.out.println("authentication success" + authentication);
-////                                response.addCookie(); // https://velog.io/@duck-ach/JSP-%EC%BF%A0%ED%82%A4Cookie-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0
-//                                    }
-//                                })
-//                                .failureHandler(new AuthenticationFailureHandler() {
-//                                    @Override
-//                                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-//                                        System.out.println("authentication failure" + exception.getMessage());
-//                                    }
-//                                })
+//                                .defaultSuccessUrl("/boards")
+//                                .failureUrl("/users/signIn")
+                                .loginProcessingUrl("/users/auth")
+                                .successHandler(new AuthenticationSuccessHandler() {
+                                    @Override
+                                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                        System.out.println("authentication success : " + authentication);
+                                        response.sendRedirect("/boards");
+//                                response.addCookie(); // https://velog.io/@duck-ach/JSP-%EC%BF%A0%ED%82%A4Cookie-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0
+                                    }
+                                })
+                                .failureHandler(new AuthenticationFailureHandler() {
+                                    @Override
+                                    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+                                        System.out.println("authentication failure : " + exception.getMessage());
+                                        response.sendRedirect("/users/signIn");
+                                    }
+                                })
                                 .permitAll()
                 )
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer

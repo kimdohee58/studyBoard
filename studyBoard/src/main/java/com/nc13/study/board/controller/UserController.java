@@ -6,12 +6,17 @@ import com.nc13.study.board.dto.UserResponseDTO;
 import com.nc13.study.board.service.UserService;
 import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.model.IModel;
+
+import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
@@ -40,24 +45,34 @@ public class UserController {
         return "users/signIn";
     }
 
-    @PostMapping("/users/auth")
-    public String auth(UserRequestDTO user, Model model) {
-        String username = user.getUsername();
-        String password = user.getPassword();
 
-        if (userService.findByUsername(username) == null) {
-            System.out.println(username + "회원 존재하지 않음");
-            return "redirect:/users/signIn";
-        }
+//    public String auth(UserRequestDTO user, Model model) {
+////    public String auth(@AuthenticationPrincipal UserRequestDTO user, Model model) {
+//        String username = user.getUsername();
+//        String password = user.getPassword();
+//
+//        if (userService.findByUsername(username) == null) {
+//            System.out.println(username + "회원 존재하지 않음");
+//            return "redirect:/users/signIn";
+//        }
+//
+//        UserResponseDTO logIn = userService.findByUsernameAndPassword(username, password);
+//        if (logIn == null) {
+//            System.out.println("사용자를 찾을 수 없음 : " + username);
+//            return "redirect:/users/signIn";
+//        }
+//        System.out.println(logIn);
+//        System.out.println("로그인 성공");
+//
+//        String logInName = username((Principal) logIn);
+//        model.addAttribute("logIn", logInName);
+//        System.out.println(logIn);
+//        return "redirect:/boards";
+//    }
 
-        UserResponseDTO logIn = userService.findByUsernameAndPassword(username, password);
-        if (logIn == null) {
-            System.out.println("사용자를 찾을 수 없음 : " + username);
-            return "redirect:/users/signIn";
-        }
-        System.out.println("로그인 성공");
-
-        model.addAttribute("user", logIn);
-        return "redirect:/boards";
+    // https://velog.io/@yoho98/Spring-Security-%EB%A1%9C%EA%B7%B8%EC%9D%B8-%ED%9B%84-%EC%82%AC%EC%9A%A9%EC%9E%90-%EC%A0%95%EB%B3%B4%EC%96%BB%EA%B8%B0
+    public String username(@AuthenticationPrincipal Principal principal) {
+        System.out.println(principal.getName());
+        return principal.getName();
     }
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,13 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/boards")
-    public String boards(Model model, @PageableDefault(page = 1) Pageable pageable) {
+    public String boards(@PageableDefault(page = 1) Pageable pageable, Model model,
+                         @AuthenticationPrincipal User user) {
         System.out.println("showBoard");
+        if(user != null) {
+            model.addAttribute("logIn", user);
+            System.out.println(user);
+        }
 
         Page<BoardResponseDTO> boardPages = boardService.paging(pageable);
 
