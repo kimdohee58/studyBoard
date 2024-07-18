@@ -4,6 +4,7 @@ import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.UserRequestDTO;
 import com.nc13.study.board.dto.UserResponseDTO;
 import com.nc13.study.board.service.UserService;
+import jakarta.validation.Valid;
 import jdk.swing.interop.SwingInterOpUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -14,6 +15,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.model.IModel;
 
@@ -33,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String signUp(UserRequestDTO user) {
+    public String signUp(@Valid UserRequestDTO user) {
         userService.save(user);
         System.out.println("회원가입 성공");
         return "redirect:/users/signIn";

@@ -1,11 +1,10 @@
-/*.header {*/
-/*    margin: 5%;*/
-/*    height: 50%;*/
-/*}*/
+.header {
+    margin-top: 2%;
+}
 
 .title {
-    margin-top: 3%;
-    height: 50%;
+    margin-top: 5%;
+    height: 40%;
 }
 
 .title:hover {
@@ -41,6 +40,12 @@ table {
 sign:hover {
     outline-color: lightslategrey;
     cursor: pointer;
+}
+
+.sign-text {
+    margin-top: 1.2%;
+    margin-right: 2%;
+    float: right;
 }
 
 .paging {

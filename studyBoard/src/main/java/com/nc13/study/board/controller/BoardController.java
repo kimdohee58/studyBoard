@@ -1,6 +1,5 @@
 package com.nc13.study.board.controller;
 
-import com.nc13.study.board.domain.Board;
 import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.BoardRequestDTO;
 import com.nc13.study.board.dto.BoardResponseDTO;
@@ -8,21 +7,15 @@ import com.nc13.study.board.security.UserDetail;
 import com.nc13.study.board.security.UserDetailService;
 import com.nc13.study.board.service.BoardService;
 import com.nc13.study.board.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,10 +65,16 @@ public class BoardController {
     }
 
     @PostMapping("/boards/write")
-    public String writeBoard(BoardRequestDTO boardRequestDTO, Model model, Authentication authentication) {
-        System.out.println("authentication.write: " + authentication);
+    public String writeBoard(@AuthenticationPrincipal UserDetail userDetail, BoardRequestDTO boardRequestDTO, Model model, Authentication authentication) {
+        System.out.println("writeBoard");
+        System.out.println("userDetail: " + userDetail);
+        if(userDetail==null) {
+            System.out.println("권한이 없습니다.");
+            return "redirect:/boards";
+        }
         System.out.println("writeBoard");
         boardService.save(boardRequestDTO);
+        System.out.println("작성 완료");
         return "redirect:/boards";
     }
 }

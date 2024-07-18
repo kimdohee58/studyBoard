@@ -5,12 +5,14 @@ import com.nc13.study.board.domain.User;
 import com.nc13.study.board.domain.UserRepository;
 import com.nc13.study.board.dto.UserResponseDTO;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+@Validated // 유효성 검사하기 위함
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepo;
@@ -37,7 +40,7 @@ public class UserService {
     }
 
     @Transactional
-    public void save(UserRequestDTO user) {
+    public void save(@Valid UserRequestDTO user) {
         // 추가한 부분
         Optional<User> userOpt = Optional.ofNullable(userRepo.findByUsername(user.getUsername()));
         if (userOpt.isPresent()) {

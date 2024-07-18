@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
 
@@ -31,9 +32,11 @@ public class Board {
     private User user;
 
     @Column(name = "entry_date")
+    @CreationTimestamp
     private Date entryDate;
 
     @Column(name = "modify_date")
+    @CreationTimestamp
     private Date modifyDate;
 
     @Builder

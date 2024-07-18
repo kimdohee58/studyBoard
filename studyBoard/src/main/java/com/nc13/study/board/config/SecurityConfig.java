@@ -3,6 +3,8 @@ package com.nc13.study.board.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.UserResponseDTO;
+import com.nc13.study.board.error.CustomAccessDeniedHandler;
+import com.nc13.study.board.error.CustomAuthenticationEntryPoint;
 import com.nc13.study.board.security.SecurityExceptionDTO;
 import com.nc13.study.board.security.UserDetail;
 import com.nc13.study.board.security.UserDetailService;
@@ -27,11 +29,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -64,22 +62,22 @@ public class SecurityConfig {
 //                        sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                )
                 .exceptionHandling(httpSecurityExceptionHandlingConfigurer -> httpSecurityExceptionHandlingConfigurer
-                        .accessDeniedHandler(customAccessDeniedHandler) // 403 상태 코드 전달, 권한(인가) 예외처리
-                        .authenticationEntryPoint(customAuthenticationEntryPoint) // 401 상태 코드 전달, 인증 예외처리
+                        .accessDeniedHandler(new CustomAccessDeniedHandler()) // 403 상태 코드 전달, 권한(인가) 예외처리
+                        .authenticationEntryPoint(new CustomAuthenticationEntryPoint()) // 401 상태 코드 전달, 인증 예외처리
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/", "GET"),
-                                        new AntPathRequestMatcher("/boards/**", "GET"),
-                                        new AntPathRequestMatcher("/boards/**", "POST"),
+                                        new AntPathRequestMatcher("/boards", "GET"),
                                         new AntPathRequestMatcher("/users/**", "GET"),
                                         new AntPathRequestMatcher("/users/**", "POST"),
 //                                        new AntPathRequestMatcher("/header"),
                                         new AntPathRequestMatcher("/css/**"),
                                         new AntPathRequestMatcher("/images/**")
                                 ).permitAll()
-//                                .requestMatchers(
-//                                        new AntPathRequestMatcher("/boards/**", "POST")
-//                                ).hasAnyRole("ADMIN", "USER")
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/boards/**", "GET"),
+                                        new AntPathRequestMatcher("/boards/**", "POST")
+                                ).authenticated()
                                 .anyRequest().permitAll()
 //                        .anyRequest().permitAll()
                 )
@@ -88,18 +86,18 @@ public class SecurityConfig {
                                 .loginPage("/users/signIn")
                                 .usernameParameter("username")
                                 .passwordParameter("password")
-                                .defaultSuccessUrl("/boards")
+//                                .defaultSuccessUrl("/boards")
 //                                .failureUrl("/users/signIn")
                                 .loginProcessingUrl("/users/auth")
-//                                .successHandler(new AuthenticationSuccessHandler() {
-//                                    @Override
-//                                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-//                                        System.out.println("authentication success : " + authentication);
-//                                        // https://velog.io/@rnqhstlr2297/Spring-Security%EC%99%80-JWT%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Soical-Login-%EA%B5%AC%ED%98%84-refresh-%ED%86%A0%ED%81%B0-%EA%B5%AC%ED%98%84
-//                                        response.sendRedirect("/boards");
-////                                response.addCookie(); // https://velog.io/@duck-ach/JSP-%EC%BF%A0%ED%82%A4Cookie-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0
-//                                    }
-//                                })
+                                .successHandler(new AuthenticationSuccessHandler() {
+                                    @Override
+                                    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+                                        System.out.println("authentication success : " + authentication);
+                                        // https://velog.io/@rnqhstlr2297/Spring-Security%EC%99%80-JWT%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Soical-Login-%EA%B5%AC%ED%98%84-refresh-%ED%86%A0%ED%81%B0-%EA%B5%AC%ED%98%84
+                                        response.sendRedirect("/boards");
+//                                response.addCookie(); // https://velog.io/@duck-ach/JSP-%EC%BF%A0%ED%82%A4Cookie-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0
+                                    }
+                                })
                                 .failureHandler(new AuthenticationFailureHandler() {
                                     @Override
                                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -134,25 +132,25 @@ public class SecurityConfig {
     }
 
     // https://velog.io/@woosim34/401-Unauthorized-VS-403Forbidden-HTTP-%EC%83%81%ED%83%9C-%EB%B9%84%EA%B5%90
-    private final AuthenticationEntryPoint customAuthenticationEntryPoint =
-            (request, response, authException) -> {
-                SecurityExceptionDTO fail = new SecurityExceptionDTO(HttpStatus.UNAUTHORIZED.value(), "UNAUTHORIZED");
-                response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                String json = new ObjectMapper().writeValueAsString(fail);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
-            };
-
-    private final AccessDeniedHandler customAccessDeniedHandler =
-            (request, response, accessDeniedException) -> {
-                SecurityExceptionDTO fail = new SecurityExceptionDTO(HttpStatus.FORBIDDEN.value(), "FORBIDDEN");
-                response.setStatus(HttpStatus.FORBIDDEN.value());
-                String json = new ObjectMapper().writeValueAsString(fail);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                PrintWriter writer = response.getWriter();
-                writer.write(json);
-                writer.flush();
-            };
+//    private final AuthenticationEntryPoint customAuthenticationEntryPoint =
+//            (request, response, authException) -> {
+//                SecurityExceptionDTO fail = new SecurityExceptionDTO(HttpStatus.UNAUTHORIZED.value(), "UNAUTHORIZED");
+//                response.setStatus(HttpStatus.UNAUTHORIZED.value());
+//                String json = new ObjectMapper().writeValueAsString(fail);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                PrintWriter writer = response.getWriter();
+//                writer.write(json);
+//                writer.flush();
+//            };
+//
+//    private final AccessDeniedHandler customAccessDeniedHandler =
+//            (request, response, accessDeniedException) -> {
+//                SecurityExceptionDTO fail = new SecurityExceptionDTO(HttpStatus.FORBIDDEN.value(), "FORBIDDEN");
+//                response.setStatus(HttpStatus.FORBIDDEN.value());
+//                String json = new ObjectMapper().writeValueAsString(fail);
+//                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+//                PrintWriter writer = response.getWriter();
+//                writer.write(json);
+//                writer.flush();
+//            };
 }

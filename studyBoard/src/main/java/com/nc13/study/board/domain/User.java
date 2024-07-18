@@ -1,6 +1,8 @@
 package com.nc13.study.board.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -21,21 +23,26 @@ public class User {
     // 스프링 부트 2.0에서는 GenerationType.IDENTITY 옵션을 추가해야만 auto_increment가 된다.
     // @GeneratedValue를 통해 자동 생성, 생성 전략=IDENTITY로 고유키 생성전략 사용
     // 이는 mySQL의 AUTO_INCRESEMENT와 같은 역할
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private int id;
 
     // @Column 사용해서 테이블의 컬럼과 연결
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
+    @Email // email 형식으로 받기
+//    @Pattern(regexp = "[a-zA-z0-9]+@[a-zA-z]+[.]+[a-zA-z.]+") // 얘 사용해도 됨 아마도
+    @NotBlank(message = "아이디는 필수 값입니다.")
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "비밀번호는 필수 값입니다.")
     private String password;
 
-    @Column(name = "nickname")
+    @Column(name = "nickname", nullable = false)
+    @NotBlank(message = "닉네임은 필수 값입니다.")
     private String nickname;
 
     @Enumerated(EnumType.STRING) // enumtype.string 옵션 사용하면 enum 이름 그대로 db에 저장
-    @Column(name = "role")
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @Builder
