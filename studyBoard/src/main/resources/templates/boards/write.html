@@ -10,22 +10,30 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
 </head>
-<body>
-<div>
-    <form action="/boards/write" method="post" class="boards">
-        <div class="boards-item">
-            <label for="title">제목
-                <input id="title" name="title">
-            </label>
+<body class="board-body">
+<div class="board-container flex-container">
+    <form action="/boards/write" method="post" class="writeBoard form-control">
+        <div class="board-title">
+            <h1 th:text="Write"></h1>
         </div>
+        <div class="board-content">
+            <div class="board-item">
+                <label for="title">
+                    <input id="title" name="title" placeholder="제목" class="board-input">
+                </label>
+            </div>
 
-        <div class="boards-item">
-            <label for="content">내용
-                <textarea id="content" name="content"></textarea>
-            </label>
+            <div class="board-item">
+                <label for="content">
+                    <textarea id="content" name="content" placeholder="내용" class="board-input-textArea"></textarea>
+                </label>
+            </div>
         </div>
-        <button type="button" class="btn btn-outline-dark" onclick="location.href='/'">뒤로가기</button>
-        <button type="submit" class="btn btn-outline-primary">작성</button>
+        <hr/>
+        <div class="board-btn">
+            <button type="button" class="btn btn-outline-dark" th:onclick="'history.back()'">뒤로가기</button>
+            <button type="submit" class="btn btn-outline-primary">작성</button>
+        </div>
     </form>
 </div>
 </body>

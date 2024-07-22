@@ -67,7 +67,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
                                 .requestMatchers(new AntPathRequestMatcher("/", "GET"),
-                                        new AntPathRequestMatcher("/boards", "GET"),
+                                        new AntPathRequestMatcher("/boards/**", "GET"),
                                         new AntPathRequestMatcher("/users/**", "GET"),
                                         new AntPathRequestMatcher("/users/**", "POST"),
 //                                        new AntPathRequestMatcher("/header"),
@@ -75,7 +75,7 @@ public class SecurityConfig {
                                         new AntPathRequestMatcher("/images/**")
                                 ).permitAll()
                                 .requestMatchers(
-                                        new AntPathRequestMatcher("/boards/**", "GET"),
+//                                        new AntPathRequestMatcher("/boards/**", "GET"),
                                         new AntPathRequestMatcher("/boards/**", "POST")
                                 ).authenticated()
                                 .anyRequest().permitAll()

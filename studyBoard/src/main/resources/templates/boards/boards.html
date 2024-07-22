@@ -20,7 +20,7 @@
 </head>
 <body>
 <!--<th:block th:replace="header :: header"></th:block>-->
-<div class="flex-container">
+<div class="boards flex-container">
     <div class="header">
         <th:block sec:authorize="isAnonymous()" class="header-item">
             <button class="sign btn" th:onclick="|location.href='@{/users/signIn}'|" th:text="로그인"/>
@@ -33,9 +33,10 @@
     </div>
     <div>
         <h1 class="title" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
-        <div sec:authorize="isAuthenticated()">
-<!--            <button class="sign btn" th:onclick="|location.href='boards/write'|" th:text="글 작성"/>-->
-        </div>
+        <button sec:authorize="isAuthenticated()" class="sign btn" th:onclick="|location.href='@{/boards/write}'|"
+                th:text="write"/>
+<!--        <button sec:authorize="isAuthenticated()" class="sign btn" th:onclick="|location.href='/boards/write'|"-->
+<!--                th:text="글작성"/>-->
     </div>
     <div>
         <table class="table table-hover">
@@ -51,7 +52,7 @@
             <!--            <tr class="" th:each="b : ${boardPages}" th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
             <th:block th:each="b : ${boardPages}">
                 <tr>
-<!--                <tr th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
+                    <!--                <tr th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
                     <td th:text="${b.title}"></td>
                     <td th:text="${b.nickname}"></td>
                     <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
@@ -111,9 +112,9 @@
             showCancelButton: true,
             confirmButtonText: 'logOut',
             cancelButtonText: '취소',
-            icon:'warning'
+            icon: 'warning'
         }).then((result) => {
-            location.href='/users/logOut'
+            location.href = '/users/logOut'
         });
     }
 </script>

@@ -11,7 +11,7 @@
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
 </head>
-<body>
+<body >
 <div class="flex-container">
     <div class="header">
         <th:block sec:authorize="isAnonymous()">
@@ -26,6 +26,7 @@
     <div>
         <th:block th:text="${board}"/>
     </div>
+    <button type="button" class="btn btn-outline-dark" th:onclick="'history.back()'">뒤로가기</button>
 </div>
 </body>
 </html>
