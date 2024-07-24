@@ -3,10 +3,12 @@
 }
 
 .flex-box {
+    flex:1;
     flex-direction: row;
 }
 .board-title {
     margin-top: 5%;
+    float: left;
 }
 
 .board-title:hover {

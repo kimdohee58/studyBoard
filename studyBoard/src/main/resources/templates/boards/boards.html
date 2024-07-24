@@ -33,13 +33,13 @@
         </th:block>
     </div>
     <div class="flex-container">
-        <div class="flex-box">
+        <div>
             <h1 class="board-title flex-item" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
             <!--th:text에 띄어쓰기가 포함되어 있다면 작동x-->
             <button sec:authorize="isAuthenticated()" class="board-btn btn"
                     th:onclick="|location.href='@{/boards/write}'|"
                     th:text="write"/>
-<!--                        <button class="board-btn btn flex-item" th:onclick="|location.href='@{/boards/write}'|" th:text="write"/>-->
+<!--            <button class="board-btn btn flex-item" th:onclick="|location.href='@{/boards/write}'|" th:text="write"/>-->
         </div>
         <table class="table table-hover">
             <thead>
