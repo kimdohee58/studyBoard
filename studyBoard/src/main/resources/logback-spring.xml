@@ -16,6 +16,12 @@
     <logger name="jdbc.sqlonly" level="INFO" appender-ref="console-infolog" />
     <logger name="jdbc.resultsettable" level="INFO" appender-ref="console-infolog" />
 
+    <!-- https://m.blog.naver.com/magicwordcafebabe/222008545174 -->
+<!--    <logger name="org.hibernate.sql" level="DEBUG"/>-->
+<!--    <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>-->
+<!--    <logger name="com.nc13.study.board" level="DEBUG"/>-->
+<!--    <logger name="org"-->
+
     <root level="off">
         <appender-ref ref="console" />
     </root>

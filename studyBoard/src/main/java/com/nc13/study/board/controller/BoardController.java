@@ -1,5 +1,6 @@
 package com.nc13.study.board.controller;
 
+import com.nc13.study.board.domain.Board;
 import com.nc13.study.board.domain.User;
 import com.nc13.study.board.dto.BoardRequestDTO;
 import com.nc13.study.board.dto.BoardResponseDTO;
@@ -51,9 +52,13 @@ public class BoardController {
     }
 
     @GetMapping("/boards/showOne/{id}")
-    public String showOne(@RequestParam("id")Long id, Model model, @AuthenticationPrincipal UserDetail userDetail) {
+    public String showOne(@PathVariable("id")Long id, Model model, @AuthenticationPrincipal UserDetail userDetail) {
         System.out.println("showOne");
         BoardResponseDTO boardResponseDTO = boardService.findById(id);
+        if(userDetail != null) {
+            User user = userDetail.getUser();
+            model.addAttribute("logIn", user);
+        }
         model.addAttribute("board", boardResponseDTO);
         return "boards/showOne";
     }

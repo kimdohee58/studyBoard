@@ -11,6 +11,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BoardResponseDTO {
+    private int id;
     private String title;
     private String content;
     private String nickname;
@@ -18,6 +19,7 @@ public class BoardResponseDTO {
     private Date modifyDate;
 
     public BoardResponseDTO(Board board) {
+        this.id = board.getId();
         this.title = board.getTitle();
         this.content = board.getContent();
         this.nickname = board.getUser().getNickname();

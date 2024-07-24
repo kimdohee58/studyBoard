@@ -2,19 +2,21 @@
     margin-top: 2%;
 }
 
-.title {
+.flex-box {
+    flex-direction: row;
+}
+.board-title {
     margin-top: 5%;
-    height: 40%;
 }
 
-.title:hover {
+.board-title:hover {
     cursor: pointer;
     font-weight: bolder;
 }
 
 .boards {
-    width: 80%;
-    margin-left: 10%;
+    width: 70%;
+    margin-left: 15%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -38,6 +40,16 @@ table {
 }
 
 sign:hover {
+    outline-color: lightslategrey;
+    cursor: pointer;
+}
+
+.board-btn {
+    align-items: flex-end;
+    float: right;
+}
+
+board-btn:hover {
     outline-color: lightslategrey;
     cursor: pointer;
 }
@@ -89,7 +101,10 @@ sign:hover {
     text-align: center;
     align-content: center;
     align-items: center;
+}
 
+.board-date {
+    float: right;
 }
 
 .board-item {

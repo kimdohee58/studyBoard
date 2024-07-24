@@ -27,18 +27,20 @@
             <button class="sign btn" th:onclick="|location.href='@{/users/signUp}'|" th:text="회원가입"/>
         </th:block>
         <th:block sec:authorize="isAuthenticated()" class="header-item">
+            <!--            <button class="sign btn" th:onclick="log" th:text="logOut"/>-->
             <button class="sign btn" th:onclick="|location.href='@{/users/logOut}'|" th:text="logOut"/>
-            <div class="sign-text" th:text="|${logIn.getNickname()} 님|"/>
+            <div class="sign-text" th:text="|${logIn.nickname} 님|"/>
         </th:block>
     </div>
-    <div>
-        <h1 class="title" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
-        <button sec:authorize="isAuthenticated()" class="sign btn" th:onclick="|location.href='@{/boards/write}'|"
-                th:text="write"/>
-<!--        <button sec:authorize="isAuthenticated()" class="sign btn" th:onclick="|location.href='/boards/write'|"-->
-<!--                th:text="글작성"/>-->
-    </div>
-    <div>
+    <div class="flex-container">
+        <div class="flex-box">
+            <h1 class="board-title flex-item" th:text="board" th:onclick="|location.href='@{/boards(page=1)}'|"/>
+            <!--th:text에 띄어쓰기가 포함되어 있다면 작동x-->
+            <button sec:authorize="isAuthenticated()" class="board-btn btn"
+                    th:onclick="|location.href='@{/boards/write}'|"
+                    th:text="write"/>
+<!--                        <button class="board-btn btn flex-item" th:onclick="|location.href='@{/boards/write}'|" th:text="write"/>-->
+        </div>
         <table class="table table-hover">
             <thead>
             <tr class="table table-primary">
@@ -49,10 +51,10 @@
             </thead>
             <tbody>
             <!--https://lifere.tistory.com/entry/Thymeleaf-list-%EB%B0%98%EB%B3%B5-%EC%B6%9C%EB%A0%A5%ED%95%98%EA%B8%B0 참고-->
-            <!--            <tr class="" th:each="b : ${boardPages}" th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
             <th:block th:each="b : ${boardPages}">
-                <tr>
-                    <!--                <tr th:onclick="|location.href='@{/boards/showOne(id=${b.id})}'|">-->
+                <!--                <tr>-->
+                <tr th:object="${b}" th:onclick="|location.href='@{/boards/showOne/{id}(id=*{id})}'|">
+                    <!--                    <td th:href="@{/boards/showOne/{id}(id=${b.id})}" th:text="${b.title}"></td>-->
                     <td th:text="${b.title}"></td>
                     <td th:text="${b.nickname}"></td>
                     <!--date 타입 formate 할때는 dates.format, String 타입은 temporals.format 참고: https://ssd0908.tistory.com/entry/thymeleaf-%ED%83%80%EC%9E%84%EB%A6%AC%ED%94%84-%EB%82%A0%EC%A7%9C-date-format-%EB%B3%80%ED%99%98-->
