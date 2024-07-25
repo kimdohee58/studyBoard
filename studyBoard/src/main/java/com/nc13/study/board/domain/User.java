@@ -4,8 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 
+import java.awt.dnd.DropTargetEvent;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +33,7 @@ public class User {
 
     // @Column 사용해서 테이블의 컬럼과 연결
     @Column(name = "email", nullable = false)
-    @Email // email 형식으로 받기
+//    @Email // email 형식으로 받기
 //    @Pattern(regexp = "[a-zA-z0-9]+@[a-zA-z]+[.]+[a-zA-z.]+") // 얘 사용해도 됨 아마도
     @NotBlank(message = "아이디는 필수 값입니다.")
     private String username;
@@ -43,21 +48,33 @@ public class User {
 
     @Enumerated(EnumType.STRING) // enumtype.string 옵션 사용하면 enum 이름 그대로 db에 저장
     @Column(name = "role", nullable = false)
+    @ColumnDefault("'ROLE_USER")
     private Role role;
+
+    @Column(name = "create_at")
+    @CreationTimestamp
+    private Date entryDate;
+
+    @Column(name = "updated_at")
+    @UpdateTimestamp
+    private Date updateDate;
 
     @Builder
     // 롬복에서 제공해주는 어노테이션으로, 클래스에 빌더 패턴을 자동으로 생성해 줍니다. 빌더 패턴은 생성자 또는 자바 빈 패턴 보다 객체 생성을 가독성 있고 편리하게 해주는 디자인 패턴 중 하나로, 테스트 과정에서 자세히 알아보겠습니다.
-    public User(int id, String username, String password, String nickname, Role role) {
+    public User(int id, String username, String password, String nickname, Role role, Date entryDate, Date updateDate) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.nickname = nickname;
-        this.role = role;
+        this.role = role.USER; // 여기서 기본값으로 USER 세팅
+        this.entryDate = entryDate;
+        this.updateDate = updateDate;
     }
 
     public User(String username, String password, List<GrantedAuthority> authorityList) {
         this.username = username;
         this.password = password;
         this.role = Role.USER;
+//        this.role = authorityList.isEmpty() ? Role.USER : NULL;
     }
 }

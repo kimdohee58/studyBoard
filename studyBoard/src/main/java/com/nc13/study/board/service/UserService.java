@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-@Validated // 유효성 검사하기 위함
+//@Validated // 유효성 검사하기 위함
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepo;
@@ -32,7 +32,7 @@ public class UserService {
     public Map<String, String> validateHandling(Errors errors) {
         Map<String, String> errorMap = new HashMap<>();
 
-        for(FieldError fieldError : errors.getFieldErrors()) {
+        for (FieldError fieldError : errors.getFieldErrors()) {
             String validKeyName = String.format("valid_%s", fieldError.getField());
             errorMap.put(validKeyName, fieldError.getDefaultMessage());
         }
@@ -40,13 +40,14 @@ public class UserService {
     }
 
     @Transactional
-    public void save(@Valid UserRequestDTO user) {
-        // 추가한 부분
+//    public void save(@Valid UserRequestDTO user) {
+    public void save(UserRequestDTO user) {
+        /*// 추가한 부분
         Optional<User> userOpt = Optional.ofNullable(userRepo.findByUsername(user.getUsername()));
         if (userOpt.isPresent()) {
             throw new BadCredentialsException("Username is already taken");
         }
-        //-----
+        //-----*/
 
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
@@ -63,7 +64,7 @@ public class UserService {
     @Transactional
     public UserResponseDTO findByUsernameAndPassword(String username, String password) {
         User user = userRepo.findByUsername(username);
-        if(!passwordEncoder.matches(password, user.getPassword())) {
+        if (!passwordEncoder.matches(password, user.getPassword())) {
             return null;
         }
         return new UserResponseDTO(user);

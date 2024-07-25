@@ -1,6 +1,8 @@
 package com.nc13.study.board.controller;
 
+import com.nc13.study.board.domain.Role;
 import com.nc13.study.board.domain.User;
+import com.nc13.study.board.domain.UserRepository;
 import com.nc13.study.board.dto.UserRequestDTO;
 import com.nc13.study.board.dto.UserResponseDTO;
 import com.nc13.study.board.service.UserService;
@@ -26,6 +28,8 @@ import java.security.Principal;
 public class UserController {
     @Autowired
     private final UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     // 회원가입
     @GetMapping("/users/signUp")
@@ -35,7 +39,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public String signUp(@Valid UserRequestDTO user) {
+//    public String signUp(@Valid UserRequestDTO user) {
+    public String signUp(UserRequestDTO user) {
         userService.save(user);
         System.out.println("회원가입 성공");
         return "redirect:/users/signIn";

@@ -41,7 +41,6 @@ import java.io.PrintWriter;
 @EnableWebSecurity
 public class SecurityConfig {
     private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-    private AuthenticationManager authenticationManager;
     private final UserDetailService userDetailService;
 
     public SecurityConfig(UserDetailService userDetailService) {
@@ -92,8 +91,9 @@ public class SecurityConfig {
                                 .successHandler(new AuthenticationSuccessHandler() {
                                     @Override
                                     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-                                        System.out.println("authentication success : " + authentication);
+//                                        System.out.println("authentication success : " + authentication);
                                         // https://velog.io/@rnqhstlr2297/Spring-Security%EC%99%80-JWT%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%9C-Soical-Login-%EA%B5%AC%ED%98%84-refresh-%ED%86%A0%ED%81%B0-%EA%B5%AC%ED%98%84
+                                        log.info("Authentication success");
                                         response.sendRedirect("/boards");
 //                                response.addCookie(); // https://velog.io/@duck-ach/JSP-%EC%BF%A0%ED%82%A4Cookie-%EC%A0%80%EC%9E%A5%ED%95%98%EA%B3%A0-%ED%99%9C%EC%9A%A9%ED%95%98%EA%B8%B0
                                     }
@@ -101,7 +101,8 @@ public class SecurityConfig {
                                 .failureHandler(new AuthenticationFailureHandler() {
                                     @Override
                                     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-                                        System.out.println("authentication failure : " + exception.getMessage());
+//                                        System.out.println("authentication failure : " + exception.getMessage());
+                                        log.info("authentication failure : " + exception);
                                         response.sendRedirect("/users/signIn");
                                     }
                                 })

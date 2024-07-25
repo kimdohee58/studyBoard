@@ -3,7 +3,6 @@ package com.nc13.study.board.domain;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 /* DB와 같이 데이터 저장소에 접근하는 영역(DAO, Data Access Object) */
 
