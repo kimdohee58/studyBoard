@@ -1,0 +1,12 @@
+.header {
+    width: 70%;
+    margin-top: 2%;
+    display: flex;
+    float: right;
+    justify-content: space-around;
+}
+
+.header-item {
+    float: right;
+    color: lightslategrey;
+}

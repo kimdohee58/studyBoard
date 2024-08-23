@@ -2,14 +2,11 @@ package com.nc13.study.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-
+@ToString(exclude = "user")
 @Entity
 @Getter
 @Table(name = "board")
@@ -47,5 +44,15 @@ public class Board {
         this.user = user;
         this.entryDate = entryDate;
         this.modifyDate = modifyDate;
+    }
+
+    @Builder
+    public Board(Board board) {
+        this.id = board.id;
+        this.title = board.title;
+        this.content = board.content;
+        this.user = board.user;
+        this.entryDate = board.entryDate;
+        this.modifyDate = board.modifyDate;
     }
 }

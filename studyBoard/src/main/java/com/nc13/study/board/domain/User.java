@@ -10,6 +10,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.awt.dnd.DropTargetEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -58,6 +59,21 @@ public class User {
     @Column(name = "updated_at")
     @UpdateTimestamp
     private Date updateDate;
+
+    // https://junghwanta.tistory.com/5
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Board> boardList;
+
+    @Builder
+    public User(User user) {
+        this.id = user.id;
+        this.username = user.getUsername();
+        this.password = user.getPassword();
+        this.nickname = user.getNickname();
+        this.role = user.getRole();
+        this.entryDate = user.getEntryDate();
+        this.updateDate = user.getUpdateDate();
+    }
 
     @Builder
     // 롬복에서 제공해주는 어노테이션으로, 클래스에 빌더 패턴을 자동으로 생성해 줍니다. 빌더 패턴은 생성자 또는 자바 빈 패턴 보다 객체 생성을 가독성 있고 편리하게 해주는 디자인 패턴 중 하나로, 테스트 과정에서 자세히 알아보겠습니다.

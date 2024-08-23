@@ -13,27 +13,15 @@
 </head>
 <body>
 <div class="boards flex-container">
-    <div class="header">
-        <th:block sec:authorize="isAnonymous()" class="header-item">
-            <button class="sign btn" th:onclick="|location.href='@{/users/signIn}'|" th:text="로그인"/>
-            <button class="sign btn" th:onclick="|location.href='@{/users/signUp}'|" th:text="회원가입"/>
-        </th:block>
-        <th:block sec:authorize="isAuthenticated()" class="header-item">
-            <!--            <button class="sign btn" th:onclick="log" th:text="logOut"/>-->
-            <button class="sign btn" th:onclick="|location.href='@{/users/logOut}'|" th:text="logOut"/>
-            <div class="sign-text" th:text="|${logIn.nickname} 님|"/>
-        </th:block>
-    </div>
+    <th:block th:replace="header :: header"/>
     <div>
         <h1 class="board-title" th:text="'Board no.'+${board.id}"
             th:onclick="|location.href='@{/boards/showOne/{id}(id=${board.id})}'|"/>
-        <button sec:authorize="isAuthenticated()" class="sign btn" th:onclick="|location.href='@{/boards/write}'|"
-                th:text="reply"/>
     </div>
     <div>
-        <h3 th:text="'제목: ' + ${board.title}"/>
-        <p th:text="'작성자: ' + ${board.nickname}"/>
+        <h3 class="board-name" th:text="'제목: ' + ${board.title}"/>
         <div class="board-date">
+            <p th:text="'작성자: ' + ${board.nickname}"/>
             <p th:text="'작성일: ' + ${#dates.format(board.entryDate, 'yyMMdd HH:mm:ss')}"/>
             <p th:text="'수정일: ' + ${#dates.format(board.modifyDate, 'yyMMdd HH:mm:ss')}"/>
         </div>
@@ -50,6 +38,39 @@
                     th:onclick="|location.href='@{/boards/delete/{id}(id=${board.id})}'|" th:text="'삭제하기'"/>
         </th:block>
         <button type="button" class="btn btn-outline-dark" th:onclick="'history.back()'" th:text="뒤로가기"/>
+        <button class="sign btn btn-outline-dark"
+                th:onclick="|location.href='@{/replys(boardId=${board.id})}'|"
+                th:text="reply"/>
+        <!--        <button class="sign btn btn-outline-dark"-->
+        <!--                sec:authorize="isAuthenticated()"-->
+        <!--                th:onclick="|location.href='@{/replys/{id}(id=${board.id})}'|"-->
+        <!--                th:text="reply"/>-->
+    </div>
+
+    <div class="replies flex-container">
+        <table class="table table-primary">
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>작성자</th>
+                <th>내용</th>
+                <th>버튼</th>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:each="r : ${replies}">
+                <tr>
+                    <td th:text="${r.id}"/>
+                    <td th:text="${r.nickname}"/>
+                    <td th:text="${r.content}"/>
+                    <td>
+<!--                        <button sec:authorize="isAuthenticated()" th:text="대댓 달기"/>-->
+                    </td>
+                </tr>
+
+            </th:block>
+            </tbody>
+        </table>
     </div>
 </div>
 </body>

@@ -1,6 +1,6 @@
 <!--    jquery -->
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
-<script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
+// <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"/>
+// <script src="http://code.jquery.com/jquery-1.8.0.min.js"/>
 
 async function logOut() {
     Swal.fire({

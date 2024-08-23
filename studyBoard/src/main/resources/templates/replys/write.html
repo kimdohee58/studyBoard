@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Board Write</title>
-    <link rel="stylesheet" th:href="@{/css/board.css}"/>
+    <title>Reply Write</title>
+    <link rel="stylesheet" th:href="@{/css/reply.css}"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
             crossorigin="anonymous"></script>
 </head>
-<body class="board-body">
-<div class="board-container flex-container">
-    <form action="/boards/write" method="post" class="writeBoard form-control">
+<body>
+<div class="reply-container flex-container">
+    <th:block th:replace="header :: header"/>
+    <form action="/replys" method="post" class="writeBoard form-control">
         <div class="board-title">
-            <h1 th:text="Write"></h1>
+            <h1 th:text="Reply"></h1>
+
         </div>
         <div class="board-content">
             <div class="board-item">
-                <label for="title">
-                    <input id="title" name="title" placeholder="제목" class="board-input">
+                <label for="boardId">
+                    <input id="boardId" th:type="hidden" th:name="boardId" th:value="${boardId}"/>
                 </label>
-            </div>
-
-            <div class="board-item">
                 <label for="content">
-                    <textarea id="content" name="content" placeholder="내용" class="board-input-textArea"></textarea>
+                    <input id="content" th:name="content" placeholder="내용" class="board-input"/>
                 </label>
             </div>
         </div>

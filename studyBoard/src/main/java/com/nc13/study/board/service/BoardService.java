@@ -42,9 +42,9 @@ public class BoardService {
     }
 
     @Transactional
-    public BoardResponseDTO findById(Long id) {
+    public Optional<Board> findById(Long id) {
         Optional<Board> board = boardRepo.findById(id);
-        return new BoardResponseDTO(board.orElse(null));
+        return Optional.ofNullable(board.orElse(null));
     }
 
     @Transactional

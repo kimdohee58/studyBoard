@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Integer> { // 제네
 
     // 회원 목록
     List<User> findAll();
+
+    User findById(int id);
 }

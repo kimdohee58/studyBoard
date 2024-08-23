@@ -6,118 +6,130 @@
 <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
 <!DOCTYPE html>
 <html>
-<header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">Study Board</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"
-                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Home</a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            Category
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="/item/showItem/전체">전체</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item" href="/item/showItem/도서">도서</a></li>
-                            <li><a class="dropdown-item" href="/item/showItem/뷰티">뷰티</a></li>
-                            <li><a class="dropdown-item" href="/item/showItem/식품">식품</a></li>
-                            <li><a class="dropdown-item" href="/item/showItem/주방용품">주방용품</a></li>
-                            <li><a class="dropdown-item" href="/item/showItem/패션의류">패션의류</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" onclick="showCart(${logIn.id})">Cart</a>
-                    </li>
-                    <c:if test="${logIn.grade eq '관리자'}"> <!--https://gkstmdduq.tistory.com/157 참고-->
-                        <li class="nav-item">
-                            <a class="nav-link" href="/admin/user/showAll">Management</a>
-                        </li>
-                    </c:if>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-                <form class="search_bar col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="/item/search" method="post">
-                    <input id="keyword" name="keyword" type="search" class="form-control form-control-dark text-bg-white" placeholder="Search..."
-                           aria-label="Search">
-                </form>
-                <div class="text-end">
-                    <!--https://ssamdu.tistory.com/14 참고-->
-                    <c:choose>
-                        <c:when test="${logIn!=null}">
-                            <strong class="text-center text-white fs-4">${logIn.nickname} 님 </strong>
-                            <button class="btn btn-outline-light" onclick="logOut(${logIn.id})">LogOut</button>
-                            <%--                            <a href="/user/logOut/${logIn.id}" class="">LogOut</a>--%>
-                            <a href="/user/myInfo/${logIn.id}" class="btn btn-outline-primary">myInfo</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="/user/logIn" class="btn btn-outline-light">LogIn</a>
-                            <a href="/user/register" class="btn btn-outline-warning">Sign-Up</a>
-                        </c:otherwise>
-                    </c:choose>
-                    <%--                    <button type="button" class="btn btn-outline-light" onclick="location.href='../user/logIn'">LogIn</button>--%>
-                    <%--                    <button type="button" class="btn btn-warning" onclick="location.href='../user/register.jsp'">Sign-up</button>--%>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <script>
-        function logOut(id) {
-            Swal.fire({
-                title: '로그아웃 하시겠습니까?',
-                showCancelButton: true,
-                confirmButtonText: '로그아웃',
-                cancelButtonText: '취소',
-                icon: 'warning'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    Swal.fire({
-                        title: '로그아웃 성공'
-                    }).then((result) => {
-                        location.href = '/user/logOut/' + id;
-                    })
-                }
-            });
-        }
+<div th:fragment="header" class="header">
+    <th:block sec:authorize="isAnonymous()" class="header-item">
+        <button class="sign btn" th:onclick="|location.href='@{/users/signIn}'|" th:text="로그인"/>
+        <button class="sign btn" th:onclick="|location.href='@{/users/signUp}'|" th:text="회원가입"/>
+    </th:block>
+    <th:block sec:authorize="isAuthenticated()" class="header-item">
+        <!--            <button class="sign btn" th:onclick="log" th:text="logOut"/>-->
+        <button class="sign btn" th:onclick="|location.href='@{/users/logOut}'|" th:text="logOut"/>
+<!--        <div class="sign-text" th:text="|${logIn.nickname} 님|"/>-->
+    </th:block>
+</div>
 
-        function showCart(id) {
-            $.ajax({
-                url: '/user/isLogin',
-                type: 'get',
-                success: (result) => {
-                    if (result.result === 'success') {
-                        location.href = '/basket/showAll/' + id;
-                    } else {
-                        Swal.fire({
-                            title: '로그인 되어있지 않습니다. 로그인하시겠습니까?',
-                            showCancelButton: true,
-                            confirmButtonText: '로그인하기',
-                            cancelButtonText: '취소',
-                            icon: 'warning'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: '로그인창으로 이동합니다..'
-                                }).then((result) => {
-                                    location.href = '/user/logIn';
-                                })
-                            }
-                        });
-                    }
-                }
-            })
-        }
-    </script>
-</header>
+<!--<header>-->
+<!--    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">-->
+<!--        <div class="container-fluid">-->
+<!--            <a class="navbar-brand" href="/">Study Board</a>-->
+<!--            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02"-->
+<!--                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">-->
+<!--                <span class="navbar-toggler-icon"></span>-->
+<!--            </button>-->
+<!--            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">-->
+<!--                <ul class="navbar-nav me-auto mb-2 mb-lg-0">-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" aria-current="page" href="/">Home</a>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item dropdown">-->
+<!--                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"-->
+<!--                           data-bs-toggle="dropdown" aria-expanded="false">-->
+<!--                            Category-->
+<!--                        </a>-->
+<!--                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/전체">전체</a></li>-->
+<!--                            <li>-->
+<!--                                <hr class="dropdown-divider">-->
+<!--                            </li>-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/도서">도서</a></li>-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/뷰티">뷰티</a></li>-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/식품">식품</a></li>-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/주방용품">주방용품</a></li>-->
+<!--                            <li><a class="dropdown-item" href="/item/showItem/패션의류">패션의류</a></li>-->
+<!--                        </ul>-->
+<!--                    </li>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link" onclick="showCart(${logIn.id})">Cart</a>-->
+<!--                    </li>-->
+<!--                    <c:if test="${logIn.grade eq '관리자'}"> &lt;!&ndash;https://gkstmdduq.tistory.com/157 참고&ndash;&gt;-->
+<!--                        <li class="nav-item">-->
+<!--                            <a class="nav-link" href="/admin/user/showAll">Management</a>-->
+<!--                        </li>-->
+<!--                    </c:if>-->
+<!--                    <li class="nav-item">-->
+<!--                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>-->
+<!--                    </li>-->
+<!--                </ul>-->
+<!--                <form class="search_bar col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search" action="/item/search" method="post">-->
+<!--                    <input id="keyword" name="keyword" type="search" class="form-control form-control-dark text-bg-white" placeholder="Search..."-->
+<!--                           aria-label="Search">-->
+<!--                </form>-->
+<!--                <div class="text-end">-->
+<!--                    &lt;!&ndash;https://ssamdu.tistory.com/14 참고&ndash;&gt;-->
+<!--                    <c:choose>-->
+<!--                        <c:when test="${logIn!=null}">-->
+<!--                            <strong class="text-center text-white fs-4">${logIn.nickname} 님 </strong>-->
+<!--                            <button class="btn btn-outline-light" onclick="logOut(${logIn.id})">LogOut</button>-->
+<!--                            <%&#45;&#45;                            <a href="/user/logOut/${logIn.id}" class="">LogOut</a>&#45;&#45;%>-->
+<!--                            <a href="/user/myInfo/${logIn.id}" class="btn btn-outline-primary">myInfo</a>-->
+<!--                        </c:when>-->
+<!--                        <c:otherwise>-->
+<!--                            <a href="/user/logIn" class="btn btn-outline-light">LogIn</a>-->
+<!--                            <a href="/user/register" class="btn btn-outline-warning">Sign-Up</a>-->
+<!--                        </c:otherwise>-->
+<!--                    </c:choose>-->
+<!--                    <%&#45;&#45;                    <button type="button" class="btn btn-outline-light" onclick="location.href='../user/logIn'">LogIn</button>&#45;&#45;%>-->
+<!--                    <%&#45;&#45;                    <button type="button" class="btn btn-warning" onclick="location.href='../user/register.jsp'">Sign-up</button>&#45;&#45;%>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </nav>-->
+<!--    <script>-->
+<!--        function logOut(id) {-->
+<!--            Swal.fire({-->
+<!--                title: '로그아웃 하시겠습니까?',-->
+<!--                showCancelButton: true,-->
+<!--                confirmButtonText: '로그아웃',-->
+<!--                cancelButtonText: '취소',-->
+<!--                icon: 'warning'-->
+<!--            }).then((result) => {-->
+<!--                if (result.isConfirmed) {-->
+<!--                    Swal.fire({-->
+<!--                        title: '로그아웃 성공'-->
+<!--                    }).then((result) => {-->
+<!--                        location.href = '/user/logOut/' + id;-->
+<!--                    })-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+
+<!--        function showCart(id) {-->
+<!--            $.ajax({-->
+<!--                url: '/user/isLogin',-->
+<!--                type: 'get',-->
+<!--                success: (result) => {-->
+<!--                    if (result.result === 'success') {-->
+<!--                        location.href = '/basket/showAll/' + id;-->
+<!--                    } else {-->
+<!--                        Swal.fire({-->
+<!--                            title: '로그인 되어있지 않습니다. 로그인하시겠습니까?',-->
+<!--                            showCancelButton: true,-->
+<!--                            confirmButtonText: '로그인하기',-->
+<!--                            cancelButtonText: '취소',-->
+<!--                            icon: 'warning'-->
+<!--                        }).then((result) => {-->
+<!--                            if (result.isConfirmed) {-->
+<!--                                Swal.fire({-->
+<!--                                    title: '로그인창으로 이동합니다..'-->
+<!--                                }).then((result) => {-->
+<!--                                    location.href = '/user/logIn';-->
+<!--                                })-->
+<!--                            }-->
+<!--                        });-->
+<!--                    }-->
+<!--                }-->
+<!--            })-->
+<!--        }-->
+<!--    </script>-->
+<!--</header>-->
 </html>

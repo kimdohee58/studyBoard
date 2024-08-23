@@ -5,6 +5,7 @@ import com.nc13.study.board.domain.User;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Data
 @Builder
